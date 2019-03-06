@@ -2,21 +2,26 @@
 $(document).ready(function() {
     //The function that does the stuff.
 
-    $("btn1").click(function (e) {
+    $("#btn1").click(function (e) {
         e.preventDefault();
+
         let currentShow = document.getElementById("name1").value;
+        currentShow=currentShow.replace(/\s/g, "+");
         console.log(currentShow);
-        'http://api.tvmaze.com/search/shows?q=:query';
-        $.ajax(currentShow, {
+         $.ajax ('http://api.tvmaze.com/singlesearch/shows?q=' + currentShow + '&embed=episodes', {
             method: "GET",
             dataType: "json"
+
         })
+
         //After the data comes back, use this function
             .done(
                 function (data) {
-                    //Add the name
-                    // $('#name').append(data.name);
-                    //Add the episodes
+                    // Add the name
+                    $("name").html("");
+                    $('#name').html(data.name);
+                    $("#episodeList").html("");
+                    // Add the episodes
                     data._embedded.episodes.forEach(function (episode) {
                         $('#episodeList').append('<tr>' +
                             '<td>' + episode.season + '</td>' +
